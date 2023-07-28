@@ -1,0 +1,75 @@
+clc;
+clear all;
+close all;
+ 
+%input image
+x=imread("https://m.media-amazon.com/images/I/716C3Gtm-qL._SL1375_.jpg");
+ 
+%Converting to Grayscale image
+x= rgb2gray(x);
+ 
+%Increasing the size of the image to twice the size
+x=double(x);
+ 
+[h,w]=size(x);
+ 
+%Evaluating FFT
+F=fft2(x);
+ 
+Fs=fftshift(F);
+Do=20;
+D=zeros(h,w);
+H=zeros(h,w);
+for u=1:h
+  for v=1:w
+  	D(u,v)=sqrt((u-(h/2))^2+(v-(w/2))^2);
+  	if D(u,v)<= Do
+      	H(u,v)=1;
+  	else
+      	H(u,v)=0;
+  	end
+  end
+end
+figure(1);
+subplot(2,2,1);
+imshow(uint8(x));
+title("original image");
+subplot(2,2,2)
+imshow(H);
+title('Ideal low pass filter mask');
+subplot(2,2,3)
+mesh(H);
+title('Filter resposne')
+Fimg=H.*Fs;
+f=ifft2(Fimg);
+f=uint8(abs(f));
+subplot(2,2,4)
+imshow(f);
+title('output image');
+D1=50;
+for u=1:h
+  for v=1:w
+  	D(u,v)=sqrt((u-(h/2))^2+(v-(w/2))^2);
+  	if D(u,v)>= D1
+      	H(u,v)=1;
+  	else
+      	H(u,v)=0;
+  	end
+  end
+end
+figure(2);
+subplot(2,2,1);
+imshow(uint8(x));
+title("original image");
+subplot(2,2,2)
+imshow(H);
+title('Ideal high pass filter mask');
+subplot(2,2,3)
+mesh(H);
+title('Filter resposne')
+Fimg=H.*Fs;
+f=ifft2(Fimg);
+f=uint8(abs(f));
+subplot(2,2,4)
+imshow(f);
+title('output image');

@@ -1,0 +1,50 @@
+Laplacian
+
+clc;
+clear all;
+close all;
+pa=imread("image1.jpg")
+p1=rgb2gray(pa)
+p=double(p1)
+figure(1)
+subplot(2,2,1);
+imshow(p1);
+title('ORIGINAL IMAGE')
+m=[0,-1,0;-1,4,-1;0,-1,0]
+mask=conv2(double(p),double(m),'same');
+subplot(2,2,2);
+imshow(mask);
+title('MASK IMAGE')
+c=1;
+sharp=p1+c*uint8(mask)
+subplot(2,2,3);
+imshow(sharp);
+title('SHARPENED IMAGE')
+y = sgtitle("Pradeesh Reddy D14B 55")
+
+
+High Boost Filtering
+
+clc;
+clear all;
+close all;
+pa=imread('image1.jpg')
+p=rgb2gray(pa)
+figure(1);
+subplot(2,2,1);
+imshow(p);
+title('ORIGINAL IMAGE')
+h=1/25*ones(5,5);
+smooth_im=conv2(double(p),double(h),'same')
+unsharp_mask =p-uint8(smooth_im);
+k=1;
+sharpen_im1=p+k*unsharp_mask;
+subplot(2,2,2);
+imshow(sharpen_im1);
+title('k=1')
+k=4.5;
+sharpen_im2=p+k*unsharp_mask;
+subplot(2,2,3);
+imshow(sharpen_im2);
+title('k=4.5')
+y = sgtitle("Pradeesh Reddy D14B 55")
